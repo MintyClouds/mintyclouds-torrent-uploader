@@ -1,0 +1,6 @@
+settings_local.py
+/upload-folder/
+.idea
+/venv/
+*/__pycache__/*
+/__pycache__/

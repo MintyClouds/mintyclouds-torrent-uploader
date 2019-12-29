@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 
 from settings_local import UPLOAD_PATH, SECRET_KEY
 
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'torrent'}
+ALLOWED_EXTENSIONS = {'torrent'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_PATH
@@ -25,7 +25,6 @@ def upload_torrent():
         files = request.files.getlist('file')
 
         if 'clear' in request.form:
-            print('clear')
             return render_template(upload_template)
 
         if len(files) > 0:

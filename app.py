@@ -1,41 +1,50 @@
 import os
-from flask import Flask, flash, request, redirect, url_for
+from flask import Flask, flash, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
 
-from settings_local import UPLOAD_PATH
-from templates.upload import upload_template
+from settings_local import UPLOAD_PATH, SECRET_KEY
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'torrent'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_PATH
+app.secret_key = SECRET_KEY
+
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def upload_torrent():
+    upload_template = 'index.html'
+    error = None
+
     if request.method == 'POST':
-        if 'file' not in request.files:
-            flash('No file part')
+        files = request.files.getlist('file')
+
+        if 'clear' in request.form:
+            print('clear')
+            return render_template(upload_template)
+
+        if len(files) > 0:
+            for file in files:
+                if file.filename == '':
+                    flash('No selected file')
+                    return redirect(request.url)
+                elif file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    flash(str('Uploaded file: {fn}'.format(fn=filename)))
+                else:
+                    flash('Unsupported file extension in file: {fn}'.format(fn=file.filename))
+            return redirect(url_for('upload_torrent'))
+        else:
+            flash('No files selected')
             return redirect(request.url)
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('upload_torrent',
-                                    filename=filename))
-    return upload_template
+
+    return render_template(upload_template, error=error)
 
 
 if __name__ == '__main__':

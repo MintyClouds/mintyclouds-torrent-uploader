@@ -1,32 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>MintyClouds Torrents</title>
-</head>
-<body>
-    <h4>MintyClouds Torrent Organizer v1.0</h4>
-    <ul>
-        <li><a href="https://trello.com/b/HtzSCsie/musicbox">Open Trello board</a></li>
-        <li><a href="https://rutracker.org/forum/index.php">Open RuTracker</a></li>
-        <li><a href="https://www.mintyclouds.in/deluge">Open Deluge</a></li>
-    </ul>
+<title>MintyClouds Torrent Uploader v1.0</title>
 
-    <p>Upload file</p>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style type="text/css">
+    html, body {
+        margin: 0;
+        background-color: #2d2a2e;
+        color: #FF6188
+    }
+    div#file-upload {
+        background-color: #423f42;
+    }
+</style>
+
+<div class="container">
+<h2>MintyClouds Torrent Uploader v1.0</h2>
+</div>
+
+<div class="container">
+    <div class="col-xs-4">
+        <a href="https://trello.com/b/HtzSCsie" class="btn btn-info" role="button">Trello list</a>
+        <a href="https://rutracker.org/forum/index.php" class="btn btn-info" role="button">RuTracker</a>
+        <a href="https://mintyclouds.in/deluge/" class="btn btn-info" role="button">Deluge</a>
+    </div>
+</div>
+
+
+<div style="margin-top:20px"></div>
+<div class="container">
     <form method=post enctype=multipart/form-data>
-      <input type=file name=file multiple>
-      <input type=submit name=upload value=Upload>
+    <div class="col-xs-4">
+        <div class="form-group">
+          <input type="file" class="custom-file-input" id="file-upload" data-buttonText="Select a File" multiple name="file">
+        </div>
+        <div>
+            <button type="submit" class="btn btn-success" name="upload">Upload</button>
+        </div>
+    </div>
 
-    {% with messages = get_flashed_messages() %}
-         {% if messages %}
-             <ul>
-                 {% for message in messages %}
-                     <li>{{ message }}</li>
-                 {% endfor %}
-             </ul>
-             <input type=submit name=clear value=Clear>
-         {% endif %}
-      {% endwith %}
+    <div class="col-xs-4">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                <button type="submit" class="btn btn-warning" name="clear">Clear</button>
+            {% endif %}
+        {% endwith %}
+    </div>
     </form>
-</body>
-</html>
+</div>

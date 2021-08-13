@@ -2,13 +2,11 @@ import os
 from flask import Flask, flash, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
 
-from settings_local import UPLOAD_PATH, SECRET_KEY
-
 ALLOWED_EXTENSIONS = {'torrent'}
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_PATH
-app.secret_key = SECRET_KEY
+app.config['UPLOAD_FOLDER'] = '/data'
+app.secret_key = os.getenv('SECRET_KEY')    # for session
 
 
 def allowed_file(filename):
@@ -47,4 +45,4 @@ def upload_torrent():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')

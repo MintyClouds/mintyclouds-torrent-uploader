@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  mintyclouds-torrent-uploader:
+    build:
+      context: .
+    ports:
+      - "${WEB_PORT}:5000"
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+    restart: unless-stopped
+    volumes:
+      - ${STORAGE_PATH}:/data
